@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Subham Dey — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Nunito:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#05080f;--card:#0d1220;--card2:#111827;--border:#1e2d45;
+  --accent:#38bdf8;--accent2:#f59e0b;--accent3:#10b981;
+  --text:#e2e8f0;--muted:#64748b;--danger:#f87171;
+  --r:14px;--ff:'Syne',sans-serif;--fb:'Nunito',sans-serif;--fm:'JetBrains Mono',monospace;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);min-height:100vh;overflow-x:hidden}
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.star{position:absolute;background:#fff;border-radius:50%;animation:twinkle linear infinite}
+@keyframes twinkle{0%,100%{opacity:.1}50%{opacity:.8}}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  background:rgba(5,8,15,.85);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  height:60px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 1.5rem;gap:.5rem;
+}
+.nav-brand{font-family:var(--ff);font-weight:800;font-size:1.15rem;color:var(--accent2);cursor:pointer;white-space:nowrap}
+.nav-links{display:flex;gap:.1rem;flex-wrap:wrap}
+.nb{
+  background:none;border:none;color:var(--muted);font-family:var(--fb);
+  font-size:.78rem;font-weight:600;padding:.35rem .7rem;border-radius:8px;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.nb:hover{color:var(--text);background:var(--card2)}
+.nb.on{color:var(--accent);background:rgba(56,189,248,.1)}
+#logoutBtn{
+  background:none;border:1px solid var(--border);color:var(--muted);
+  font-family:var(--fb);font-size:.78rem;font-weight:600;
+  padding:.35rem .8rem;border-radius:8px;cursor:pointer;transition:all .2s;
+  display:none;white-space:nowrap;
+}
+#logoutBtn:hover{border-color:var(--danger);color:var(--danger)}
+.page{display:none;min-height:100vh;padding-top:72px;position:relative;z-index:1;animation:fadeUp .35s ease}
+.page.on{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.wrap{max-width:860px;margin:0 auto;padding:2rem 1.2rem}
+.sec-title{
+  font-family:var(--ff);font-size:2rem;font-weight:800;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:.25rem;
+}
+.sec-sub{color:var(--muted);font-size:.88rem;margin-bottom:1.8rem}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:1rem;transition:border-color .2s}
+.card:hover{border-color:rgba(56,189,248,.2)}
+.btn{
+  display:inline-flex;align-items:center;gap:.45rem;
+  background:var(--accent);color:#05080f;
+  font-family:var(--fb);font-weight:700;font-size:.85rem;
+  padding:.55rem 1.2rem;border-radius:10px;border:none;
+  cursor:pointer;transition:all .2s;
+}
+.btn:hover{background:#7dd3fc;transform:translateY(-1px)}
+.btn.out{background:none;border:1px solid var(--border);color:var(--text)}
+.btn.out:hover{border-color:var(--accent);color:var(--accent);background:rgba(56,189,248,.06)}
+.btn.red{background:none;border:1px solid var(--border);color:var(--danger)}
+.btn.red:hover{border-color:var(--danger);background:rgba(248,113,113,.07)}
+.btn.grn{background:var(--accent3);color:#05080f}
+.btn.grn:hover{background:#34d399}
+.btn-row{display:flex;gap:.7rem;flex-wrap:wrap;margin-top:1rem}
+input,textarea,select{
+  width:100%;background:var(--card2);border:1px solid var(--border);
+  color:var(--text);font-family:var(--fb);font-size:.9rem;
+  padding:.6rem .9rem;border-radius:10px;outline:none;transition:border .2s;
+}
+input:focus,textarea:focus,select:focus{border-color:var(--accent)}
+textarea{resize:vertical;min-height:85px}
+label{font-size:.78rem;font-weight:700;color:var(--muted);display:block;margin-bottom:.3rem;letter-spacing:.05em;text-transform:uppercase}
+.field{margin-bottom:1rem}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:560px){.grid2{grid-template-columns:1fr}.nav-links{display:none}}
+.tag{display:inline-block;padding:.22rem .65rem;border-radius:20px;font-size:.75rem;font-weight:600;background:rgba(56,189,248,.1);color:var(--accent);border:1px solid rgba(56,189,248,.18);margin:.2rem}
+.tag.gold{background:rgba(245,158,11,.1);color:var(--accent2);border-color:rgba(245,158,11,.18)}
+.tag.grn{background:rgba(16,185,129,.1);color:var(--accent3);border-color:rgba(16,185,129,.18)}
+#toast{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:999;
+  background:var(--accent3);color:#05080f;font-weight:700;font-size:.85rem;
+  padding:.65rem 1.2rem;border-radius:10px;opacity:0;pointer-events:none;transition:opacity .3s;
+}
+#toast.show{opacity:1}
+/* LOGIN */
+#loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;padding-top:0}
+.login-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:22px;padding:2.5rem 2rem;width:100%;max-width:400px;position:relative;z-index:1;
+}
+.login-logo{
+  font-family:var(--ff);font-weight:800;font-size:2rem;text-align:center;margin-bottom:.3rem;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.login-sub{text-align:center;color:var(--muted);font-size:.85rem;margin-bottom:2rem}
+.login-err{color:var(--danger);font-size:.82rem;text-align:center;margin-bottom:.8rem;display:none}
+.login-hint{color:var(--muted);font-size:.78rem;text-align:center;margin-top:1rem}
+.login-hint code{color:var(--accent);font-family:var(--fm);background:rgba(56,189,248,.1);padding:.1rem .35rem;border-radius:5px}
+/* PROFILE HERO */
+.profile-hero{
+  display:flex;align-items:center;gap:1.5rem;
+  background:linear-gradient(135deg,var(--card),var(--card2));
+  border:1px solid var(--border);border-radius:20px;
+  padding:1.8rem;margin-bottom:1.2rem;position:relative;overflow:hidden;
+}
+.profile-hero::before{
+  content:'';position:absolute;top:-50px;right:-50px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(56,189,248,.1),transparent 70%);
+}
+.avatar-wrap{flex-shrink:0;text-align:center}
+.avatar{
+  width:88px;height:88px;border-radius:50%;border:3px solid var(--accent);
+  background:var(--card2);display:flex;align-items:center;justify-content:center;
+  font-family:var(--ff);font-size:1.8rem;font-weight:800;color:var(--accent);
+  overflow:hidden;cursor:pointer;transition:border-color .2s;
+}
+.avatar:hover{border-color:var(--accent2)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar-hint{font-size:.7rem;color:var(--muted);margin-top:.3rem}
+.profile-info h2{font-family:var(--ff);font-size:1.5rem;font-weight:800}
+.profile-info p{color:var(--muted);font-size:.85rem;margin-top:.3rem}
+.profile-badge{
+  display:inline-block;background:rgba(56,189,248,.1);border:1px solid rgba(56,189,248,.2);
+  color:var(--accent);font-size:.75rem;font-weight:700;padding:.2rem .7rem;border-radius:20px;margin-top:.5rem;
+}
+/* ACHIEVEMENT */
+.ach-item{
+  display:flex;gap:1rem;align-items:flex-start;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:1.2rem;margin-bottom:.7rem;transition:border-color .2s;
+}
+.ach-item:hover{border-color:rgba(245,158,11,.25)}
+.ach-icon{
+  width:42px;height:42px;border-radius:10px;flex-shrink:0;
+  background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.18);
+  display:flex;align-items:center;justify-content:center;font-size:1.2rem;
+}
+.ach-info h4{font-family:var(--ff);font-weight:700;font-size:.95rem}
+.ach-info p{color:var(--muted);font-size:.82rem;margin-top:.2rem}
+.ach-year{font-family:var(--fm);font-size:.73rem;color:var(--accent2);margin-top:.3rem}
+.icon-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.95rem;padding:.2rem;transition:color .2s}
+.icon-btn:hover{color:var(--danger)}
+/* CERT */
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+.cert-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:1.2rem;transition:all .2s;
+}
+.cert-card:hover{border-color:rgba(16,185,129,.25);transform:translateY(-2px)}
+.cert-card img{width:100%;height:90px;object-fit:cover;border-radius:8px;margin-bottom:.7rem}
+.cert-card h4{font-family:var(--ff);font-weight:700;font-size:.9rem}
+.cert-card p{color:var(--muted);font-size:.8rem;margin-top:.25rem}
+.cert-date{font-family:var(--fm);font-size:.72rem;color:var(--accent3);margin-top:.4rem}
+/* SKILL BAR */
+.skill-bar-wrap{margin-bottom:.75rem}
+.skill-bar-label{display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.3rem}
+.skill-bar{height:6px;background:var(--card2);border-radius:99px;overflow:hidden}
+.skill-bar-fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+/* CONTACT */
+.contact-item{
+  display:flex;align-items:center;gap:1rem;
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r);padding:1rem 1.2rem;margin-bottom:.7rem;transition:border-color .2s;
+}
+.contact-item:hover{border-color:rgba(56,189,248,.2)}
+.c-icon{
+  width:42px;height:42px;border-radius:10px;flex-shrink:0;
+  background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.15);
+  display:flex;align-items:center;justify-content:center;font-size:1.1rem;
+}
+.c-detail label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.c-detail p{font-size:.9rem;font-weight:500}
+.c-detail a{color:var(--accent);text-decoration:none}
+.c-detail a:hover{text-decoration:underline}
+/* MODAL */
+.modal-bg{
+  position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.72);
+  backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:1rem;
+}
+.modal-bg.open{display:flex}
+.modal{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:20px;padding:1.8rem;width:100%;max-width:460px;animation:fadeUp .3s ease;
+}
+.modal h3{font-family:var(--ff);font-weight:800;font-size:1.15rem;margin-bottom:1.2rem}
+/* EMPTY */
+.empty{text-align:center;padding:3rem 1rem;color:var(--muted)}
+.empty-icon{font-size:2.5rem;margin-bottom:.6rem}
+/* RESUME ZONE */
+.cv-zone{
+  border:2px dashed var(--border);border-radius:var(--r);
+  padding:2rem;text-align:center;cursor:pointer;transition:all .2s;
+}
+.cv-zone:hover{border-color:var(--accent);background:rgba(56,189,248,.03)}
+</style>
+</head>
+<body>
+
+<div id="stars"></div>
+<div id="toast">✓ Saved!</div>
+
+<!-- NAV -->
+<nav id="mainNav" style="display:none">
+  <div class="nav-brand" onclick="go('profile')">SD.</div>
+  <div class="nav-links">
+    <button class="nb" data-pg="profile" onclick="go('profile')">Profile</button>
+    <button class="nb" data-pg="achievements" onclick="go('achievements')">Achievements</button>
+    <button class="nb" data-pg="certificates" onclick="go('certificates')">Certificates</button>
+    <button class="nb" data-pg="about" onclick="go('about')">About</button>
+    <button class="nb" data-pg="contact" onclick="go('contact')">Contact</button>
+  </div>
+  <button id="logoutBtn" onclick="logout()">↩ Logout</button>
+</nav>
+
+<!-- ═══════════ LOGIN PAGE ═══════════ -->
+<div class="page on" id="loginPage">
+  <div class="login-box">
+    <div class="login-logo">Subham Dey</div>
+    <div class="login-sub">Sign in to manage your portfolio</div>
+    <div class="login-err" id="loginErr">❌ Incorrect username or password</div>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="loginUser" placeholder="Enter your username" autocomplete="username"/>
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="loginPass" placeholder="Enter your password" onkeydown="if(event.key==='Enter')doLogin()"/>
+    </div>
+    <button class="btn" style="width:100%;justify-content:center;font-size:.95rem" onclick="doLogin()">Sign In →</button>
+    <div class="login-hint" style="margin-top:1.2rem">
+      Default login — Username: <code>admin</code> &nbsp; Password: <code>subham123</code>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ PROFILE PAGE ═══════════ -->
+<div class="page" id="profilePage">
+  <div class="wrap">
+    <div class="profile-hero">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarEl" onclick="document.getElementById('avInput').click()" title="Click to upload photo">
+          <span id="avInitials">SD</span>
+        </div>
+        <input type="file" id="avInput" accept="image/*" style="display:none" onchange="uploadAvatar(this)"/>
+        <div class="avatar-hint">Click to change</div>
+      </div>
+      <div class="profile-info">
+        <h2 id="heroName">Subham Dey</h2>
+        <p id="heroSub">B.Tech Engineering · MIT Vishwaprayag University</p>
+        <div class="profile-badge" id="heroBadge">📍 West Bengal, India</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3 style="font-family:var(--ff);font-weight:700;font-size:1rem;margin-bottom:1.2rem">✏️ Edit Profile</h3>
+      <div class="grid2">
+        <div class="field"><label>Full Name</label><input type="text" id="pName" value="Subham Dey"/></div>
+        <div class="field"><label>Date of Birth</label><input type="date" id="pDOB"/></div>
+        <div class="field"><label>University</label><input type="text" id="pUni" value="MIT Vishwaprayag University"/></div>
+        <div class="field"><label>Degree</label><input type="text" id="pDeg" value="B.Tech Engineering"/></div>
+        <div class="field"><label>Location</label><input type="text" id="pLoc" value="West Bengal, India"/></div>
+        <div class="field"><label>Graduation Year</label><input type="text" id="pGrad" placeholder="e.g. 2025"/></div>
+      </div>
+      <div class="field"><label>Short Bio</label><textarea id="pBio" placeholder="Write a short bio about yourself…"></textarea></div>
+      <div class="field"><label>Skills (comma separated)</label><input type="text" id="pSkills" value="Python, Java, C++, HTML/CSS, JavaScript, DSA"/></div>
+      <div class="btn-row">
+        <button class="btn" onclick="saveProfile()">💾 Save Profile</button>
+      </div>
+    </div>
+
+    <div class="card" id="skillsPreviewCard" style="display:none">
+      <div style="font-family:var(--ff);font-weight:700;font-size:.9rem;margin-bottom:.8rem;color:var(--muted)">SKILLS</div>
+      <div id="skillTagsEl"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ ACHIEVEMENTS PAGE ═══════════ -->
+<div class="page" id="achievementsPage">
+  <div class="wrap">
+    <div class="sec-title">Achievements</div>
+    <div class="sec-sub">Your milestones, awards & accomplishments</div>
+    <div class="card">
+      <h3 style="font-family:var(--ff);font-weight:700;font-size:1rem;margin-bottom:1.2rem">+ Add New Achievement</h3>
+      <div class="grid2">
+        <div class="field"><label>Title</label><input type="text" id="achTitle" placeholder="e.g. Won Hackathon 2024"/></div>
+        <div class="field"><label>Year</label><input type="text" id="achYear" placeholder="e.g. 2024"/></div>
+      </div>
+      <div class="field"><label>Description</label><textarea id="achDesc" placeholder="Brief description of the achievement…" style="min-height:70px"></textarea></div>
+      <div class="field"><label>Category</label>
+        <select id="achCat">
+          <option value="🏆">🏆 Award / Prize</option>
+          <option value="💻">💻 Technical / Coding</option>
+          <option value="🎓">🎓 Academic</option>
+          <option value="🚀">🚀 Project / Startup</option>
+          <option value="🌟">🌟 Recognition</option>
+          <option value="🤝">🤝 Leadership</option>
+          <option value="📚">📚 Publication / Research</option>
+          <option value="🎨">🎨 Creative</option>
+        </select>
+      </div>
+      <button class="btn grn" onclick="addAch()">+ Add Achievement</button>
+    </div>
+    <div id="achList"></div>
+  </div>
+</div>
+
+<!-- ═══════════ CERTIFICATES PAGE ═══════════ -->
+<div class="page" id="certificatesPage">
+  <div class="wrap">
+    <div class="sec-title">Certificates</div>
+    <div class="sec-sub">Upload and showcase your certifications</div>
+    <div class="card">
+      <h3 style="font-family:var(--ff);font-weight:700;font-size:1rem;margin-bottom:1.2rem">+ Upload Certificate</h3>
+      <div class="grid2">
+        <div class="field"><label>Certificate Name</label><input type="text" id="certName" placeholder="e.g. AWS Cloud Practitioner"/></div>
+        <div class="field"><label>Issued By</label><input type="text" id="certBy" placeholder="e.g. Amazon Web Services"/></div>
+        <div class="field"><label>Issue Date</label><input type="date" id="certDate"/></div>
+        <div class="field"><label>Credential ID (optional)</label><input type="text" id="certID" placeholder="e.g. ABC-12345"/></div>
+      </div>
+      <div class="field"><label>Certificate Image (optional)</label>
+        <input type="file" id="certFile" accept="image/*" style="padding:.5rem"/>
+      </div>
+      <button class="btn grn" onclick="addCert()">+ Add Certificate</button>
+    </div>
+    <div class="cert-grid" id="certList"></div>
+  </div>
+</div>
+
+<!-- ═══════════ ABOUT PAGE ═══════════ -->
+<div class="page" id="aboutPage">
+  <div class="wrap">
+    <div class="sec-title">About Me</div>
+    <div class="sec-sub">Resume, experience & skills</div>
+
+    <div class="card">
+      <h3 style="font-family:var(--ff);font-weight:700;font-size:1rem;margin-bottom:1.2rem">🎓 Education</h3>
+      <div class="grid2">
+        <div class="field"><label>Degree</label><input type="text" id="eDeg" value="B.Tech in Engineering"/></div>
+        <div class="field"><label>University</label><input type="text" id="eUni" value="MIT Vishwaprayag University"/></div>
+        <div class="field"><label>Year</label><input type="text" id="eYear" placeholder="e.g. 2021–2025"/></div>
+        <div class="field"><label>CGPA / Percentage</label><input type="text" id="eCGPA" placeholder="e.g. 8.5 CGPA"/></div>
+      </div>
+      <button class="btn" onclick="saveEdu()">💾 Save Education</button>
+    </div>
+
+    <div class="card">
+      <h3 style="font-family:var(--ff);font-weight:700;font-size:1rem;margin-bottom:.8rem">💼 Experience / Internships</h3>
+      <div id="expList" style="margin-bottom:1rem"></div>
+      <div class="grid2">
+        <div class="field"><label>Role / Position</label><input type="text" id="exRole" placeholder="e.g. Software Intern"/></div>
+        <div class="field"><label>Company / Org</label><input type="text" id="exCo" placeholder="e.g. TechCorp"/></div>
+        <div class="field"><label>Duration</label><input type="text" id="exDur" placeholder="e.g. Jun–Aug 2024"/></div>
+        <div class="field"><label>Description</label><input type="text" id="exDesc" placeholder="Brief description"/></div>
+      </div>
+      <button class="btn grn" onclick="addExp()">+ Add Experience</button>
+    </div>
+
+    <div class="card">
+      <h3 style="font-family:var(--ff);font-weight:700;font-size:1rem;margin-bottom:.8rem">⚡ Technical Skills</h3>
+      <div id="skillBarList" style="margin-bottom:1rem"></div>
+      <div class="grid2">
+        <div class="field"><label>Skill Name</label><input type="text" id="skName" placeholder="e.g. Python"/></div>
+        <div class="field"><label>Proficiency %</label><input type="number" id="skPct" placeholder="e.g. 85" min="0" max="100"/></div>
+      </div>
+      <button class="btn grn" onclick="addSkillBar()">+ Add Skill</button>
+    </div>
+
+    <div class="card">
+      <h3 style="font-family:var(--ff);font-weight:700;font-size:1rem;margin-bottom:1rem">📄 Resume / CV</h3>
+      <div class="cv-zone" onclick="document.getElementById('cvFile').click()">
+        <div style="font-size:2rem;margin-bottom:.4rem">📋</div>
+        <div style="font-weight:600;margin-bottom:.3rem" id="cvLabel">Click to upload your Resume / CV</div>
+        <div style="color:var(--muted);font-size:.82rem">PDF, DOC or DOCX • Max 10 MB</div>
+        <input type="file" id="cvFile" accept=".pdf,.doc,.docx" style="display:none" onchange="uploadCV(this)"/>
+      </div>
+      <div id="cvLinkWrap" style="display:none;margin-top:.8rem">
+        <a id="cvAnchor" target="_blank" class="btn out">📥 View / Download Resume</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ CONTACT PAGE ═══════════ -->
+<div class="page" id="contactPage">
+  <div class="wrap">
+    <div class="sec-title">Contact</div>
+    <div class="sec-sub">Reach out to Subham Dey</div>
+    <div id="contactDisplay"></div>
+    <div class="card" style="margin-top:1.5rem">
+      <h3 style="font-family:var(--ff);font-weight:700;font-size:1rem;margin-bottom:1.2rem">✏️ Edit Contact Info</h3>
+      <div class="grid2">
+        <div class="field"><label>Email</label><input type="email" id="cEmail" placeholder="your@email.com"/></div>
+        <div class="field"><label>Phone Number</label><input type="tel" id="cPhone" placeholder="+91 XXXXX XXXXX"/></div>
+        <div class="field"><label>GitHub URL</label><input type="text" id="cGit" placeholder="https://github.com/username"/></div>
+        <div class="field"><label>LinkedIn URL</label><input type="text" id="cLI" placeholder="https://linkedin.com/in/username"/></div>
+        <div class="field"><label>Twitter / X URL</label><input type="text" id="cTw" placeholder="https://twitter.com/username"/></div>
+        <div class="field"><label>Website</label><input type="text" id="cWeb" placeholder="https://yoursite.com"/></div>
+      </div>
+      <div class="field"><label>Address / Location</label><input type="text" id="cAddr" placeholder="City, State, Country"/></div>
+      <div class="btn-row"><button class="btn" onclick="saveContact()">💾 Save Contact</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ACHIEVEMENT EDIT MODAL -->
+<div class="modal-bg" id="achModal">
+  <div class="modal">
+    <h3>✏️ Edit Achievement <button onclick="closeModal('achModal')" style="float:right;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;margin-top:-4px">✕</button></h3>
+    <input type="hidden" id="editIdx"/>
+    <div class="field"><label>Title</label><input type="text" id="editTitle"/></div>
+    <div class="field"><label>Year</label><input type="text" id="editYear"/></div>
+    <div class="field"><label>Description</label><textarea id="editDesc"></textarea></div>
+    <div class="btn-row">
+      <button class="btn" onclick="saveAchEdit()">Save Changes</button>
+      <button class="btn out" onclick="closeModal('achModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── STATE ───
+let D = {
+  loggedIn:false,
+  profile:{name:'Subham Dey',dob:'',uni:'MIT Vishwaprayag University',deg:'B.Tech Engineering',loc:'West Bengal, India',grad:'',bio:'',skills:'Python, Java, C++, HTML/CSS, JavaScript, DSA',avatar:''},
+  achievements:[],
+  certificates:[],
+  edu:{deg:'B.Tech in Engineering',uni:'MIT Vishwaprayag University',year:'',cgpa:''},
+  exp:[],
+  skillBars:[],
+  contact:{email:'',phone:'',git:'',li:'',tw:'',web:'',addr:''},
+  cv:''
+};
+
+const LS='sd_portfolio_v1';
+function persist(){ try{localStorage.setItem(LS,JSON.stringify(D))}catch(e){} }
+function hydrate(){
+  try{
+    const raw=localStorage.getItem(LS);
+    if(raw){ const p=JSON.parse(raw); Object.assign(D,p); }
+  }catch(e){}
+}
+
+// ─── STARS ───
+(()=>{
+  const c=document.getElementById('stars');
+  for(let i=0;i<90;i++){
+    const el=document.createElement('div');
+    const sz=Math.random()*2+.4;
+    el.className='star';
+    el.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-duration:${2+Math.random()*5}s;animation-delay:${Math.random()*5}s`;
+    c.appendChild(el);
+  }
+})();
+
+// ─── TOAST ───
+function toast(msg,col){
+  const t=document.getElementById('toast');
+  t.textContent='✓ '+msg; t.style.background=col||'var(--accent3)';
+  t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200);
+}
+
+// ─── NAVIGATION ───
+function go(pg){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById(pg+'Page').classList.add('on');
+  document.querySelectorAll('.nb[data-pg="'+pg+'"]').forEach(b=>b.classList.add('on'));
+  ({profile:renderProfile,achievements:renderAch,certificates:renderCerts,about:renderAbout,contact:renderContact}[pg]||function(){})();
+  window.scrollTo(0,0);
+}
+
+// ─── AUTH ───
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value;
+  if(u==='admin'&&p==='subham123'){
+    document.getElementById('loginErr').style.display='none';
+    D.loggedIn=true; persist();
+    document.getElementById('loginPage').classList.remove('on');
+    document.getElementById('mainNav').style.display='flex';
+    document.getElementById('logoutBtn').style.display='block';
+    go('profile');
+  } else {
+    document.getElementById('loginErr').style.display='block';
+    document.getElementById('loginPass').value='';
+  }
+}
+function logout(){
+  D.loggedIn=false; persist();
+  document.getElementById('mainNav').style.display='none';
+  document.getElementById('logoutBtn').style.display='none';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById('loginPage').classList.add('on');
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+}
+
+// ─── PROFILE ───
+function uploadAvatar(inp){
+  if(!inp.files[0])return;
+  new Promise(res=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.readAsDataURL(inp.files[0])})
+  .then(src=>{D.profile.avatar=src;persist();setAvatarEl();toast('Profile photo updated!');});
+}
+function setAvatarEl(){
+  const el=document.getElementById('avatarEl');
+  if(D.profile.avatar){
+    el.innerHTML=`<img src="${D.profile.avatar}" alt="avatar"/>`;
+  } else {
+    const n=(D.profile.name||'SD').split(' ').map(x=>x[0]).join('').slice(0,2).toUpperCase();
+    el.innerHTML=`<span id="avInitials">${n}</span>`;
+  }
+}
+function renderProfile(){
+  const p=D.profile;
+  setEl('pName',p.name||'Subham Dey');setEl('pDOB',p.dob||'');setEl('pUni',p.uni||'');
+  setEl('pDeg',p.deg||'');setEl('pLoc',p.loc||'');setEl('pGrad',p.grad||'');
+  setEl('pBio',p.bio||'');setEl('pSkills',p.skills||'');
+  document.getElementById('heroName').textContent=p.name||'Subham Dey';
+  document.getElementById('heroSub').textContent=(p.deg||'Engineer')+' · '+(p.uni||'MIT Vishwaprayag University');
+  document.getElementById('heroBadge').textContent='📍 '+(p.loc||'West Bengal, India');
+  setAvatarEl();
+  const tags=(p.skills||'').split(',').map(s=>s.trim()).filter(Boolean);
+  const sc=document.getElementById('skillsPreviewCard');
+  if(tags.length){
+    sc.style.display='block';
+    document.getElementById('skillTagsEl').innerHTML=tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('');
+  } else sc.style.display='none';
+}
+function saveProfile(){
+  ['name','dob','uni','deg','loc','grad','bio','skills'].forEach(k=>{
+    const el=document.getElementById('p'+k.charAt(0).toUpperCase()+k.slice(1));
+    if(el) D.profile[k]=el.value;
+  });
+  persist(); renderProfile(); toast('Profile saved!');
+}
+
+// ─── ACHIEVEMENTS ───
+function addAch(){
+  const t=document.getElementById('achTitle').value.trim();
+  if(!t){alert('Please enter a title');return;}
+  D.achievements.unshift({
+    title:t,
+    year:document.getElementById('achYear').value||String(new Date().getFullYear()),
+    desc:document.getElementById('achDesc').value,
+    cat:document.getElementById('achCat').value
+  });
+  persist(); renderAch();
+  ['achTitle','achYear','achDesc'].forEach(id=>document.getElementById(id).value='');
+  toast('Achievement added! 🏆');
+}
+function renderAch(){
+  const el=document.getElementById('achList');
+  if(!D.achievements.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">🏆</div><p>No achievements yet — add your first one above!</p></div>';return;
+  }
+  el.innerHTML=D.achievements.map((a,i)=>`
+    <div class="ach-item">
+      <div class="ach-icon">${a.cat||'🏆'}</div>
+      <div class="ach-info" style="flex:1">
+        <h4>${esc(a.title)}</h4>
+        ${a.desc?`<p>${esc(a.desc)}</p>`:''}
+        <div class="ach-year">${a.year||''}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.3rem">
+        <button class="icon-btn" onclick="openAchEdit(${i})" title="Edit">✏️</button>
+        <button class="icon-btn" onclick="delAch(${i})" title="Delete">🗑️</button>
+      </div>
+    </div>`).join('');
+}
+function delAch(i){if(confirm('Delete this achievement?')){D.achievements.splice(i,1);persist();renderAch();toast('Deleted','var(--danger)')}}
+function openAchEdit(i){
+  const a=D.achievements[i];
+  document.getElementById('editIdx').value=i;
+  document.getElementById('editTitle').value=a.title;
+  document.getElementById('editYear').value=a.year;
+  document.getElementById('editDesc').value=a.desc||'';
+  document.getElementById('achModal').classList.add('open');
+}
+function saveAchEdit(){
+  const i=+document.getElementById('editIdx').value;
+  D.achievements[i].title=document.getElementById('editTitle').value;
+  D.achievements[i].year=document.getElementById('editYear').value;
+  D.achievements[i].desc=document.getElementById('editDesc').value;
+  persist(); renderAch(); closeModal('achModal'); toast('Achievement updated!');
+}
+
+// ─── CERTIFICATES ───
+function addCert(){
+  const n=document.getElementById('certName').value.trim();
+  if(!n){alert('Enter certificate name');return;}
+  const cert={name:n,by:document.getElementById('certBy').value,date:document.getElementById('certDate').value,id:document.getElementById('certID').value,img:''};
+  const f=document.getElementById('certFile').files[0];
+  if(f){
+    const r=new FileReader();
+    r.onload=e=>{cert.img=e.target.result;D.certificates.unshift(cert);persist();renderCerts();};
+    r.readAsDataURL(f);
+  } else { D.certificates.unshift(cert);persist();renderCerts(); }
+  ['certName','certBy','certID'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('certDate').value='';
+  document.getElementById('certFile').value='';
+  toast('Certificate added! 📜');
+}
+function renderCerts(){
+  const el=document.getElementById('certList');
+  if(!D.certificates.length){
+    el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="empty-icon">📜</div><p>No certificates yet — upload your first one above!</p></div>';return;
+  }
+  el.innerHTML=D.certificates.map((c,i)=>`
+    <div class="cert-card">
+      ${c.img?`<img src="${c.img}" alt="cert"/>`:'<div style="font-size:2rem;margin-bottom:.7rem">📜</div>'}
+      <h4>${esc(c.name)}</h4>
+      <p>${esc(c.by||'')}</p>
+      <div class="cert-date">${c.date||''} ${c.id?'· '+esc(c.id):''}</div>
+      <button class="icon-btn" onclick="delCert(${i})" style="margin-top:.6rem;font-size:.82rem">🗑️ Remove</button>
+    </div>`).join('');
+}
+function delCert(i){if(confirm('Remove certificate?')){D.certificates.splice(i,1);persist();renderCerts();toast('Removed','var(--danger)')}}
+
+// ─── ABOUT ───
+function saveEdu(){
+  D.edu={deg:val('eDeg'),uni:val('eUni'),year:val('eYear'),cgpa:val('eCGPA')};
+  persist(); toast('Education saved!');
+}
+function addExp(){
+  const r=val('exRole');if(!r){alert('Enter a role');return;}
+  D.exp.unshift({role:r,co:val('exCo'),dur:val('exDur'),desc:val('exDesc')});
+  persist(); renderAbout();
+  ['exRole','exCo','exDur','exDesc'].forEach(id=>document.getElementById(id).value='');
+  toast('Experience added!');
+}
+function delExp(i){D.exp.splice(i,1);persist();renderAbout();toast('Removed','var(--danger)')}
+function addSkillBar(){
+  const n=val('skName');if(!n){alert('Enter skill name');return;}
+  const p=Math.min(100,Math.max(0,parseInt(val('skPct'))||70));
+  D.skillBars.push({name:n,pct:p});persist();renderAbout();
+  document.getElementById('skName').value='';document.getElementById('skPct').value='';
+  toast('Skill added!');
+}
+function delSkillBar(i){D.skillBars.splice(i,1);persist();renderAbout();toast('Removed','var(--danger)')}
+function uploadCV(inp){
+  if(!inp.files[0])return;
+  const r=new FileReader();
+  r.onload=e=>{
+    D.cv=e.target.result;persist();
+    document.getElementById('cvLabel').textContent='✅ Resume uploaded — click to replace';
+    document.getElementById('cvLinkWrap').style.display='block';
+    document.getElementById('cvAnchor').href=D.cv;
+    toast('Resume uploaded! 📋');
+  };
+  r.readAsDataURL(inp.files[0]);
+}
+function renderAbout(){
+  setEl('eDeg',D.edu.deg||'B.Tech in Engineering');
+  setEl('eUni',D.edu.uni||'MIT Vishwaprayag University');
+  setEl('eYear',D.edu.year||'');
+  setEl('eCGPA',D.edu.cgpa||'');
+  // exp
+  const expEl=document.getElementById('expList');
+  expEl.innerHTML=D.exp.map((e,i)=>`
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:.9rem 1rem;margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div style="font-weight:600;font-size:.9rem">${esc(e.role)}</div>
+        <div style="color:var(--muted);font-size:.82rem">${esc(e.co||'')}${e.dur?' · '+esc(e.dur):''}</div>
+        ${e.desc?`<div style="font-size:.8rem;margin-top:.3rem">${esc(e.desc)}</div>`:''}
+      </div>
+      <button class="icon-btn" onclick="delExp(${i})">🗑️</button>
+    </div>`).join('');
+  // skill bars
+  const skEl=document.getElementById('skillBarList');
+  skEl.innerHTML=D.skillBars.map((s,i)=>`
+    <div class="skill-bar-wrap">
+      <div class="skill-bar-label">
+        <span>${esc(s.name)}</span>
+        <span style="color:var(--muted)">${s.pct}%
+          <button class="icon-btn" onclick="delSkillBar(${i})" style="font-size:.75rem;margin-left:.3rem">✕</button>
+        </span>
+      </div>
+      <div class="skill-bar"><div class="skill-bar-fill" style="width:${s.pct}%"></div></div>
+    </div>`).join('');
+  // cv
+  if(D.cv){
+    document.getElementById('cvLabel').textContent='✅ Resume uploaded — click to replace';
+    document.getElementById('cvLinkWrap').style.display='block';
+    document.getElementById('cvAnchor').href=D.cv;
+  }
+}
+
+// ─── CONTACT ───
+function saveContact(){
+  D.contact={email:val('cEmail'),phone:val('cPhone'),git:val('cGit'),li:val('cLI'),tw:val('cTw'),web:val('cWeb'),addr:val('cAddr')};
+  persist(); renderContact(); toast('Contact saved!');
+}
+function renderContact(){
+  const c=D.contact;
+  setEl('cEmail',c.email||'');setEl('cPhone',c.phone||'');setEl('cGit',c.git||'');
+  setEl('cLI',c.li||'');setEl('cTw',c.tw||'');setEl('cWeb',c.web||'');setEl('cAddr',c.addr||'');
+  const rows=[
+    {icon:'📧',label:'Email',v:c.email,href:'mailto:'+c.email},
+    {icon:'📱',label:'Phone',v:c.phone,href:'tel:'+c.phone},
+    {icon:'🐙',label:'GitHub',v:c.git,href:c.git},
+    {icon:'💼',label:'LinkedIn',v:c.li,href:c.li},
+    {icon:'🐦',label:'Twitter / X',v:c.tw,href:c.tw},
+    {icon:'🌐',label:'Website',v:c.web,href:c.web},
+    {icon:'📍',label:'Address',v:c.addr,href:null},
+  ].filter(r=>r.v&&r.v.trim());
+  const el=document.getElementById('contactDisplay');
+  if(!rows.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">📬</div><p>Fill in your contact details below and click Save</p></div>';return;
+  }
+  el.innerHTML='<div class="card">'+
+    `<h3 style="font-family:var(--ff);font-weight:700;font-size:1rem;margin-bottom:1rem">📬 Get In Touch</h3>`+
+    rows.map(r=>`
+      <div class="contact-item">
+        <div class="c-icon">${r.icon}</div>
+        <div class="c-detail">
+          <label>${r.label}</label>
+          ${r.href?`<p><a href="${esc(r.href)}" target="_blank" rel="noopener">${esc(r.v)}</a></p>`:`<p>${esc(r.v)}</p>`}
+        </div>
+      </div>`).join('')+
+  '</div>';
+}
+
+// ─── MODAL ───
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.modal-bg').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+
+// ─── HELPERS ───
+function esc(s){const d=document.createElement('div');d.textContent=String(s||'');return d.innerHTML;}
+function val(id){const el=document.getElementById(id);return el?el.value:'';}
+function setEl(id,v){const el=document.getElementById(id);if(el){if(el.tagName==='TEXTAREA'||el.tagName==='INPUT'||el.tagName==='SELECT')el.value=v;else el.textContent=v;}}
+
+// ─── BOOT ───
+hydrate();
+if(D.loggedIn){
+  document.getElementById('loginPage').classList.remove('on');
+  document.getElementById('mainNav').style.display='flex';
+  document.getElementById('logoutBtn').style.display='block';
+  go('profile');
+}
+</script>
+</body>
+</html>
